@@ -1,3 +1,50 @@
-<p>
-  data-table works!
-</p>
+<div class="container">
+  <!-- start data list with card -->
+  <div class="card">
+    <!-- Title of components -->
+    <div class="card-header">{{pageTitle}}</div>
+    <!-- Body of components -->
+    <div class="card-body">
+      <!-- Search in components -->
+      <div class="row">
+        <div class="col-md-2"><p class="lead">Search</p></div>
+        <div class="col-md-2">
+          <input type="search" [(ngModel)]='search' name="search" id="search" class="form-control" placeholder="Search...">
+        </div>
+      </div>
+      <!-- Search Result components 
+      <div class="row">
+        <div class="col-md-6">
+          <h3>Search: <span class="lead">{{search}}</span></h3>
+        </div>
+      </div>
+
+      -->
+      <!-- Data in thr table -->
+      <div class="table-responsive">
+        <table class="table" *ngIf="products && products.length" >
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Code</th>
+              <th scope="col">Available</th>
+              <th scope="col">Price</th>
+              <th scope="col">Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of products | search:search">
+              <td>{{product.productId}}</td>
+              <td>{{product.productName}}</td>
+              <td>{{product.productCode | lowercase}}</td>
+              <td>{{product.releaseDate}}</td>
+              <td>{{product.price | currency }}</td>
+              <td><app-star-raiting [raiting] = 'product.raiting' (raitingClicked)='onRaitingClicked($event)'></app-star-raiting></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
