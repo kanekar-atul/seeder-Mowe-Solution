@@ -1,29 +1,35 @@
 import { Injectable } from '@angular/core';
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/catch';
+
 import { IProduct } from './product';
 
 @Injectable()
 
 export class DataService {
-    getProducts(): IProduct[] {
-        return [
-            {
-            'productId': 255,
-            'productName': 'Hammer',
-            'productCode': '25das',
-            'releaseDate': 'March 25, 2018',
-            'description': 'lorem Ipsum',
-            'price': 250,
-            'raiting': 3
-          },
-          {
-            'productId': 20,
-            'productName': 'Coat',
-            'productCode': '85das',
-            'releaseDate': 'March 30, 2018',
-            'description': 'lorem Ipsum',
-            'price': 1000,
-            'raiting': 5
-        }];
+
+    private _productUrl = '../../assets/data.json';
+
+    constructor(private _http: Http) {
+
+    }
+
+    getProducts() {
+        return this._http.get(this._productUrl)
+            .map((response: Response) => <IProduct[]> response.json())
+            .do(data => console.log('All: ' +  JSON.stringify))
+            .catch(ex => {
+                this.handleError(ex);
+                return Observable.throw(ex);
+            });
+    }
+
+    private handleError(error: Response) {
+        console.error(error);
+        return Observable.throw(error.json().error || 'Server Error');
     }
 }
 
